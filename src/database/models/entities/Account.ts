@@ -1,5 +1,5 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Client } from "./Client";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Account_Transaction } from "./AccountTransaction";
 
 @Entity('accounts')
 export class Account {
@@ -15,7 +15,6 @@ export class Account {
     @UpdateDateColumn()
     updated_at: Date
 
-    @ManyToOne(() => Client, client => client.codClient)
-    @JoinColumn({name: 'client_id'})
-    client: Client
+    @OneToMany(() => Account_Transaction, transactions => transactions.account)
+    transactions: Account_Transaction[]
 }
