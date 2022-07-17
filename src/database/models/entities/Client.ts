@@ -1,4 +1,4 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Account } from "./Account";
 
 @Entity('clients')
@@ -21,10 +21,10 @@ export class Client {
     @Column({type: 'text'})
     password: string;
 
-    @Column({type: 'timestamp', default: 'now()'})
+    @CreateDateColumn()
     created_at: Date;
 
-    @Column({type: 'timestamp', default: 'now()'})
+    @UpdateDateColumn()
     updated_at: Date
 
     @OneToMany(() => Account, account => account.client)

@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Client } from "./Client";
 
 @Entity('accounts')
@@ -9,10 +9,10 @@ export class Account {
     @Column({type: "integer", unique: true})
     codClient: number;
 
-    @Column({type: 'timestamp', default: 'now()'})
+    @CreateDateColumn()
     created_at: Date;
 
-    @Column({type: 'timestamp', default: 'now()'})
+    @UpdateDateColumn()
     updated_at: Date
 
     @ManyToOne(() => Client, client => client.codClient)
