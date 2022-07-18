@@ -26,7 +26,6 @@ export class AccountTransactionService {
     return newTransaction;
   }
   async withdrawTransaction(transaction: IAccountTransaction) {
-    console.log(transaction);
     const clientAccount = await accountRepository.find({
       where: {
         client: { codClient: transaction.codClient },
