@@ -14,11 +14,11 @@ export class Account_Transaction {
     @Column({type: "decimal"})
     value: number;
 
-    @Column({type: "enum", enum: Account_Transaction})
+    @Column({type: "enum", enum: TypeTransaction})
     type: TypeTransaction;
 
     @CreateDateColumn()
-    created_at: Date;
+    createdAt: Date;
 
     @ManyToOne(() => Account, account => account.transactions)
     account: Account
