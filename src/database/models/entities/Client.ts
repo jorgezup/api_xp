@@ -1,11 +1,9 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Account } from "./Account";
 
 @Entity('clients')
 export class Client {
-    @PrimaryGeneratedColumn()
-    id: number;
-
-    @Column({type: "integer", unique: true})
+    @PrimaryColumn()
     codClient: number;
 
     @Column({type: 'text'})
@@ -14,15 +12,24 @@ export class Client {
     @Column({type: 'text'})
     surname: string;
 
-    @Column({type: 'text'})
+    @Column({type: 'varchar', length: 100, unique: true})
     email: string;
 
     @Column({type: 'text'})
     password: string;
 
     @CreateDateColumn()
-    created_at: Date;
+    createdAt: Date;
 
     @UpdateDateColumn()
-    updated_at: Date
+    updatedAt: Date
+
+    @OneToOne(() => Account, account => account.client)
+    account: Account
+
+    constructor() { 
+        if (!this.codClient) {
+            this.codClient = Math.floor(100000 + Math.random() * 900000)
+        }
+    }
 }
