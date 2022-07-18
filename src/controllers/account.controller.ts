@@ -25,7 +25,7 @@ export class AccountController {
       return res.status(404).json({ message: result.message });
     }
 
-    return res.json(result);
+    return res.status(201).end();
   }
   async withdraw(req: Request, res: Response) {
     const { value } = req.body;
@@ -44,7 +44,7 @@ export class AccountController {
       return res.status(500).json({ message: result.message });
     }
 
-    return res.json(result);
+    return res.status(201).end();
   }
   async balance(req: Request, res: Response) {
     const { codClient } = req.params;
