@@ -1,8 +1,9 @@
 import { Router } from "express";
+
 import { ClientController } from "../controllers/clients.controller";
 
-const routes = Router()
+const routes = Router();
 
-routes.post('/', new ClientController().create)
+routes.post("/", new ClientController().create);
 
-export {routes as ClientRoutes}
+export { routes as ClientRoutes };
