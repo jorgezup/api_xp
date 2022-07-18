@@ -1,3 +1,3 @@
 export interface IAccount {
-    codClient: number;
+  codClient: number;
 }
