@@ -11,7 +11,7 @@ export class Account_Transaction {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: "decimal"})
+    @Column({type: "decimal", precision: 7, scale: 2})
     value: number;
 
     @Column({type: "enum", enum: TypeTransaction})
