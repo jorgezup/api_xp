@@ -1,19 +1,21 @@
-import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Account_Transaction } from "./AccountTransaction";
+import { Client } from "./Client";
 
 @Entity('accounts')
 export class Account {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({type: "integer", unique: true})
-    codClient: number;
-
     @CreateDateColumn()
-    created_at: Date;
+    createdAt: Date;
 
     @UpdateDateColumn()
-    updated_at: Date
+    updatedAt: Date
+
+    @OneToOne(() => Client, client => client.account)
+    @JoinColumn({name: 'codClient', referencedColumnName: 'codClient'})
+    client: Client
 
     @OneToMany(() => Account_Transaction, transactions => transactions.account)
     transactions: Account_Transaction[]
