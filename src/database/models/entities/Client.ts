@@ -1,35 +1,43 @@
-import { Column, CreateDateColumn, Entity, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  OneToOne,
+  PrimaryColumn,
+  UpdateDateColumn,
+} from "typeorm";
+
 import { Account } from "./Account";
 
-@Entity('clients')
+@Entity("clients")
 export class Client {
-    @PrimaryColumn()
-    codClient: number;
+  @PrimaryColumn()
+  codClient: number;
 
-    @Column({type: 'text'})
-    name: string;
+  @Column({ type: "text" })
+  name: string;
 
-    @Column({type: 'text'})
-    surname: string;
+  @Column({ type: "text" })
+  surname: string;
 
-    @Column({type: 'varchar', length: 100, unique: true})
-    email: string;
+  @Column({ type: "varchar", length: 100, unique: true })
+  email: string;
 
-    @Column({type: 'text'})
-    password: string;
+  @Column({ type: "text" })
+  password: string;
 
-    @CreateDateColumn()
-    createdAt: Date;
+  @CreateDateColumn()
+  createdAt: Date;
 
-    @UpdateDateColumn()
-    updatedAt: Date
+  @UpdateDateColumn()
+  updatedAt: Date;
 
-    @OneToOne(() => Account, account => account.client)
-    account: Account
+  @OneToOne(() => Account, (account) => account.client)
+  account: Account;
 
-    constructor() { 
-        if (!this.codClient) {
-            this.codClient = Math.floor(100000 + Math.random() * 900000)
-        }
+  constructor() {
+    if (!this.codClient) {
+      this.codClient = Math.floor(100000 + Math.random() * 900000);
     }
+  }
 }
