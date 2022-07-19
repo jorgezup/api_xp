@@ -39,9 +39,12 @@ export class AccountTransactionService {
 
     const accountService = new AccountService();
 
-    const { saldo } = await accountService.balance(transaction.codClient);
+    const result = await accountService.balance(transaction.codClient);
 
-    if (saldo - transaction.value < 0) {
+    if (result instanceof Error) {
+      return result.message;
+    }
+    if (result.saldo - transaction.value < 0) {
       return new Error("There's not enought money");
     }
 
