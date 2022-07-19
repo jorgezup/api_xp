@@ -2,8 +2,11 @@ import { Router } from "express";
 
 import { AccountController } from "../controllers/account.controller";
 import { accountTransactionMiddleware } from "../middlewares/accountTransaction.middleware";
+import { authenticationMiddleware } from "../middlewares/auth.middleware";
 
 const routes = Router();
+
+routes.use(authenticationMiddleware);
 
 routes.post(
   "/saque",
@@ -15,6 +18,6 @@ routes.post(
   accountTransactionMiddleware,
   new AccountController().deposit
 );
-routes.get("/:codClient", new AccountController().balance);
+routes.get("/", new AccountController().balance);
 
 export { routes as accountRoutes };
