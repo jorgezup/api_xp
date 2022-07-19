@@ -1,10 +1,7 @@
 import "dotenv/config";
-import jwt, {
-  JsonWebTokenError,
-  JwtPayload,
-  SignOptions,
-  TokenExpiredError,
-} from "jsonwebtoken";
+import jwt, { JwtPayload, SignOptions } from "jsonwebtoken";
+
+import HttpException from "../shared/http.exception";
 
 const SECRET = process.env.JWT_SECRET || "";
 
@@ -13,24 +10,24 @@ type Payload = {
 };
 
 const jwtConfig: SignOptions = {
-  //   expiresIn: "1d", TO-DO: validar erro "Error: invalid expiresIn option for string payload"
+  // expiresIn: 60, // TO-DO: validar erro "Error: invalid expiresIn option for string payload"
   algorithm: "HS256",
 };
 
 // TO-DO -> type payload
-const generateJWTToken = (payload: any) => jwt.sign(payload, SECRET, jwtConfig);
+const generateJWTToken = (payload: Payload) => jwt.sign(payload, SECRET);
 
 const authenticateToken = async (
   token: string
 ): Promise<string | JwtPayload | Error> => {
   if (!token) {
-    return JsonWebTokenError;
+    return new HttpException(401, "Token expired");
   }
 
   try {
-    return jwt.verify(token, SECRET, jwtConfig);
+    return jwt.verify(token, SECRET);
   } catch (e) {
-    return TokenExpiredError;
+    return new HttpException(401, "Token expired");
   }
 };
 
