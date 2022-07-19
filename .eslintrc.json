@@ -60,6 +60,7 @@
             "error",
             { "devDependencies": ["**/*.spec.js"] }
         ],
+        "@typescript-eslint/no-unused-vars": ["off"],
         "prettier/prettier": "error"
     },
     "settings": {
