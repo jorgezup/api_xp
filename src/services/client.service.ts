@@ -2,6 +2,16 @@ import { Client } from "../database/models/entities/Client";
 import { accountRepository } from "../database/models/repositories/account.repository";
 import { clientRepository } from "../database/models/repositories/client.repository";
 import { IClient } from "../interfaces/client.interface";
+import { generateJWTToken } from "../utils/JWTToken";
+
+type loginClientRequest = {
+  codClient: number;
+  password: number;
+};
+
+type Payload = {
+  id: string;
+};
 
 export class ClientService {
   async createClient(client: IClient): Promise<Client | Error> {
@@ -20,5 +30,20 @@ export class ClientService {
     await accountRepository.save(newAccount);
 
     return newClient;
+  }
+  async loginClient({
+    codClient,
+    password,
+  }: loginClientRequest): Promise<string | Error> {
+    if (!(await clientRepository.findOneBy({ codClient }))) {
+      return new Error("Client does not exists");
+    }
+
+    // Verificar o password
+    const payload = codClient.toString();
+
+    const token = generateJWTToken(payload);
+
+    return token;
   }
 }
