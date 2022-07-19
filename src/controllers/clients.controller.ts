@@ -17,4 +17,17 @@ export class ClientController {
 
     return res.json(result);
   }
+  async login(req: Request, res: Response): Promise<Response> {
+    const { codClient, password } = req.body;
+
+    const service = new ClientService();
+
+    const result = await service.loginClient({ codClient, password });
+
+    if (result instanceof Error) {
+      return res.status(400).json({ message: result.message });
+    }
+
+    return res.json(result);
+  }
 }
