@@ -39,11 +39,10 @@ export class ClientService {
       return new Error("Client does not exists");
     }
 
-    // Verificar o password
-    const payload = codClient.toString();
+    const payload: Payload = { id: codClient.toString() };
 
     const token = generateJWTToken(payload);
-
+    // console.log(token);
     return token;
   }
 }
