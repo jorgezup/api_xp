@@ -22,10 +22,14 @@ export class Account {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne(() => Client, (client) => client.account)
+  @OneToOne(() => Client, (client) => client.account, { eager: true })
   @JoinColumn({ name: "codClient", referencedColumnName: "codClient" })
   client: Client;
 
-  @OneToMany(() => Account_Transaction, (transactions) => transactions.account)
+  @OneToMany(
+    () => Account_Transaction,
+    (transactions) => transactions.account,
+    { eager: true }
+  )
   transactions: Account_Transaction[];
 }
