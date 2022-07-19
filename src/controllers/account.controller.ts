@@ -10,11 +10,12 @@ import { AccountTransactionService } from "../services/accountTransaction.servic
 export class AccountController {
   async deposit(req: Request, res: Response) {
     const { value } = req.body;
+    const { loggedClientId } = res.locals;
 
     const transaction: IAccountTransaction = {
       value,
       type: TypeTransaction.DEPOSIT,
-      codClient: 847091, // TO-DO: este valor tem que vir da requisição
+      codClient: loggedClientId, // TO-DO: este valor tem que vir da requisição
     };
 
     const service = new AccountTransactionService();
@@ -29,11 +30,12 @@ export class AccountController {
   }
   async withdraw(req: Request, res: Response) {
     const { value } = req.body;
+    const { loggedClientId } = res.locals;
 
     const transaction: IAccountTransaction = {
       value, // TO-DO validação
       type: TypeTransaction.WITHDRAW,
-      codClient: 847091, // TO-DO: este valor tem que vir da requisição
+      codClient: loggedClientId, // TO-DO: este valor tem que vir da requisição
     };
 
     const service = new AccountTransactionService();
@@ -47,11 +49,11 @@ export class AccountController {
     return res.status(201).end();
   }
   async balance(req: Request, res: Response) {
-    const { codClient } = req.params;
+    const { loggedClientId } = res.locals;
 
     const service = new AccountService();
 
-    const result = await service.balance(Number(codClient));
+    const result = await service.balance(Number(loggedClientId));
 
     return res.json(result);
   }
