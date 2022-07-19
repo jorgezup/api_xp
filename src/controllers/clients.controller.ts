@@ -28,6 +28,6 @@ export class ClientController {
       return res.status(400).json({ message: result.message });
     }
 
-    return res.json(result);
+    return res.status(200).json({ token: result });
   }
 }
