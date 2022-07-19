@@ -1,11 +1,11 @@
 import express from "express";
 
-import { AccountRoutes } from "./account.route";
-import { ClientRoutes } from "./clients.route";
+import { accountRoutes } from "./account.route";
+import { clientRoutes } from "./clients.route";
 
 const routes = express.Router();
 
-routes.use("/clients", ClientRoutes);
-routes.use("/conta", AccountRoutes);
+routes.use("/clients", clientRoutes);
+routes.use("/conta", accountRoutes);
 
 export { routes };
