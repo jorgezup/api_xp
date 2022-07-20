@@ -7,4 +7,5 @@ export interface IAccountTransaction {
   value: number;
   type: TypeTransaction;
   codClient: number;
+  accountId: number;
 }
