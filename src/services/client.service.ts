@@ -1,48 +1,55 @@
-import { Client } from "../database/models/entities/Client";
 import { accountRepository } from "../database/models/repositories/account.repository";
 import { clientRepository } from "../database/models/repositories/client.repository";
-import { IClient } from "../interfaces/client.interface";
+import {
+  IClientLogin,
+  IClientRequest,
+  IClientResponse,
+} from "../interfaces/client.interface";
+import { IPayload } from "../interfaces/payload.interface";
 import { generateJWTToken } from "../utils/JWTToken";
 
-type loginClientRequest = {
-  codClient: number;
-  password: number;
-};
-
-type Payload = {
-  id: string;
-};
-
 export class ClientService {
-  async createClient(client: IClient): Promise<Client | Error> {
+  async createClient(client: IClientRequest): Promise<IClientResponse | Error> {
     if (await clientRepository.findOneBy({ email: client.email })) {
       return new Error("Email already exists");
     }
 
-    const newClient = clientRepository.create({
-      ...client,
-      // codClient: Math.floor(100000 + Math.random() * 900000)
-    });
+    const newClient = clientRepository.create(client);
 
     const newAccount = accountRepository.create({ client: newClient });
 
     await clientRepository.save(newClient);
     await accountRepository.save(newAccount);
 
-    return newClient;
+    const response: IClientResponse = {
+      codClient: newClient.codClient,
+      name: newClient.name,
+      surname: newClient.surname,
+      email: newClient.email,
+    };
+
+    return response;
   }
   async loginClient({
     codClient,
     password,
-  }: loginClientRequest): Promise<string | Error> {
-    if (!(await clientRepository.findOneBy({ codClient }))) {
+  }: IClientLogin): Promise<string | Error> {
+    const accountClient = await accountRepository.findOneBy({
+      client: { codClient },
+    });
+    if (!accountClient) {
       return new Error("Client does not exists");
     }
-
-    const payload: Payload = { id: codClient.toString() };
+    const payload: IPayload = {
+      accountId: accountClient.id,
+      codClient: accountClient.client.codClient,
+      name: accountClient.client.name,
+      surname: accountClient.client.surname,
+      email: accountClient.client.email,
+    };
 
     const token = generateJWTToken(payload);
-    // console.log(token);
+
     return token;
   }
 }
