@@ -1,4 +1,5 @@
 import express from "express";
+// import "express-async-errors"; // TO-DO: descomentar
 
 import { AppDataSource } from "./database/data-source";
 import { errorMiddleware } from "./middlewares/error.middleware";
