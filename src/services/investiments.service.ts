@@ -1,5 +1,4 @@
 import { TradeOrder } from "../controllers/investiments.controller";
-import { Account } from "../database/models/entities/Account";
 import { Stock } from "../database/models/entities/Stock";
 import {
   Stock_Transaction,
@@ -7,7 +6,7 @@ import {
 } from "../database/models/entities/StockTransaction";
 import { accountRepository } from "../database/models/repositories/account.repository";
 import { stockRepository } from "../database/models/repositories/stock.repository";
-import { stockTransactionRepository } from "../database/models/repositories/stockTransaction.repository copy";
+import { stockTransactionRepository } from "../database/models/repositories/stockTransaction.repository";
 
 type StockQuantityType = {
   totalQuantity: number;
