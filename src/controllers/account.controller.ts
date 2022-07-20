@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 
+import { IPayload } from "../interfaces/payload.interface";
 import {
   IAccountTransaction,
   TypeTransaction,
@@ -10,12 +11,13 @@ import { AccountTransactionService } from "../services/accountTransaction.servic
 export class AccountController {
   async deposit(req: Request, res: Response) {
     const { value } = req.body;
-    const { id } = res.locals.loggedClientId;
+    const { accountId, codClient }: IPayload = res.locals.payload;
 
     const transaction: IAccountTransaction = {
       value,
       type: TypeTransaction.DEPOSIT,
-      codClient: id, // TO-DO: este valor tem que vir da requisição
+      codClient,
+      accountId,
     };
 
     const service = new AccountTransactionService();
@@ -23,19 +25,20 @@ export class AccountController {
     const result = await service.depositTransaction(transaction);
 
     if (result instanceof Error) {
-      return res.status(404).json({ message: result.message });
+      return res.status(400).json({ message: result.message });
     }
 
     return res.status(201).end();
   }
   async withdraw(req: Request, res: Response) {
     const { value } = req.body;
-    const { id } = res.locals.loggedClientId;
+    const { accountId, codClient }: IPayload = res.locals.payload;
 
     const transaction: IAccountTransaction = {
-      value, // TO-DO validação
+      value,
       type: TypeTransaction.WITHDRAW,
-      codClient: id, // TO-DO: este valor tem que vir da requisição
+      codClient,
+      accountId,
     };
 
     const service = new AccountTransactionService();
@@ -43,19 +46,21 @@ export class AccountController {
     const result = await service.withdrawTransaction(transaction);
 
     if (result instanceof Error) {
-      return res.status(500).json({ message: result.message });
+      return res.status(400).json({ message: result.message });
     }
 
     return res.status(201).end();
   }
   async balance(req: Request, res: Response) {
-    const { id } = res.locals.loggedClientId;
-
-    // console.log("AQUI->", id);
+    const { codClient }: IPayload = res.locals.payload;
 
     const service = new AccountService();
 
-    const result = await service.balance(Number(id));
+    const result = await service.balance(codClient);
+
+    if (result instanceof Error) {
+      return res.status(400).json({ message: result.message });
+    }
 
     return res.json(result);
   }
