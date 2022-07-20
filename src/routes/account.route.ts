@@ -3,21 +3,28 @@ import { Router } from "express";
 import { AccountController } from "../controllers/account.controller";
 import { accountTransactionMiddleware } from "../middlewares/accountTransaction.middleware";
 import { authenticationMiddleware } from "../middlewares/auth.middleware";
+import { validateAccountClient } from "../middlewares/validateAccountClient.middleware";
 
 const routes = Router();
 
 routes.use(authenticationMiddleware);
 
 routes.post(
-  "/saque",
+  "/:accountId/saque",
+  validateAccountClient,
   accountTransactionMiddleware,
   new AccountController().withdraw
 );
 routes.post(
-  "/deposito",
+  "/:accountId/deposito",
+  validateAccountClient,
   accountTransactionMiddleware,
   new AccountController().deposit
 );
-routes.get("/", new AccountController().balance);
+routes.get(
+  "/:accountId/saldo",
+  validateAccountClient,
+  new AccountController().balance
+);
 
 export { routes as accountRoutes };
