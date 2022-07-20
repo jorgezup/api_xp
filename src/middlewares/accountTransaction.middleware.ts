@@ -5,7 +5,7 @@ const schema = joi.object({
   value: joi.number().positive().required(),
 });
 
-const validateTransaction = (
+const accountTransactionMiddleware = (
   req: Request,
   res: Response,
   next: NextFunction
@@ -23,4 +23,4 @@ const validateTransaction = (
   next();
 };
 
-export { validateTransaction as accountTransactionMiddleware };
+export { accountTransactionMiddleware };
