@@ -10,6 +10,7 @@ import {
 
 import { Account_Transaction } from "./AccountTransaction";
 import { Client } from "./Client";
+import { Stock_Transaction } from "./StockTransaction";
 
 @Entity("accounts")
 export class Account {
@@ -32,4 +33,11 @@ export class Account {
     { eager: true }
   )
   transactions: Account_Transaction[];
+
+  @OneToMany(
+    () => Stock_Transaction,
+    (stocks_transactions) => stocks_transactions.account,
+    { eager: true }
+  )
+  stocks_transactions: Stock_Transaction[];
 }
