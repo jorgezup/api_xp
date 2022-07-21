@@ -1,15 +1,14 @@
 import { Router } from "express";
 
-import { InvestimentsController } from "../controllers/investiments.controller";
 import { StocksController } from "../controllers/stocks.controller";
-import { accountTransactionMiddleware } from "../middlewares/accountTransaction.middleware";
-import { authenticationMiddleware } from "../middlewares/auth.middleware";
 
 const routes = Router();
 
 // routes.use(authenticationMiddleware);
 
 routes.get("/", new StocksController().list);
+/* Is Admin */
 routes.post("/", new StocksController().create);
+routes.put("/:stock", new StocksController().update);
 
 export { routes as stocksRoute };
