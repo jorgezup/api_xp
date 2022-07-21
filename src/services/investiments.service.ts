@@ -74,6 +74,10 @@ export class InvestimentsService {
       order.accountId
     );
 
+    if (stockQuantity instanceof Error) {
+      return stockQuantity;
+    }
+
     if (
       stockQuantity.totalQuantity === null ||
       stockQuantity.totalQuantity - order.quantity < 0
@@ -99,7 +103,7 @@ export class InvestimentsService {
     const list = await accountRepository
       .createQueryBuilder("a")
       .select(
-        "s.codStock, s.name as `stockName`, SUM(st.quantity) as `stocksQuantity`, ROUND(AVG(st.value),2) as `avgPrice`"
+        "s.codStock, s.name as stockName, SUM(st.quantity) as stocksQuantity, ROUND(AVG(st.value),2) as avgPrice"
       )
       .leftJoin("stocks_transactions", "st", "a.id = st.accountId")
       .leftJoin("stocks", "s", "s.codStock = st.codStock")
