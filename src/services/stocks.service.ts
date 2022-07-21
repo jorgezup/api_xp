@@ -13,6 +13,14 @@ type ErrorAPI = {
   message: string;
 };
 
+type StockResponse = {
+  error?: ErrorAPI;
+  message: string;
+  symbol: string;
+  price: number;
+  updated_at: Date;
+};
+
 export class StocksService {
   async createStock({ name, value }: StockRequest) {
     const stock = await stockRepository.findOneBy({ name });
@@ -37,7 +45,7 @@ export class StocksService {
 
     const { results } = await response.json();
 
-    const resultObject: any = Object.entries(results)[0][1];
+    const resultObject = Object.entries(results)[0][1] as StockResponse;
 
     if (resultObject.error) {
       const messageText = resultObject.message.split(":")[0];
