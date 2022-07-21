@@ -12,8 +12,8 @@ export const validateAccountClient = async (
 
   if (Number(accountId) !== Number(payload.accountId)) {
     return next({
-      messageType: payload.messageType,
-      statusCode: payload.statusCode,
+      messageType: "Unauthorized",
+      statusCode: 401,
     });
   }
 
