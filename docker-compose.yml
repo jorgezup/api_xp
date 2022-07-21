@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  db:
+    container_name: postgres-container
+    image: postgres:14-alpine
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=api_rest_xp
+    ports:
+      - '5432:5432'
+    volumes:
+      - db:/var/lib/postgresql/data
+  api:
+    container_name: api-container
+    build: .
+    image: api_node
+    restart: always
+    command: npm start
+    volumes:
+      - ./dist:/app/dist
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: db
+      JWT_SECRET: secretJWT
+      PORT: 3000
+volumes:
+  db:
+    driver: local
+networks:
+  backend:
+    driver: default
