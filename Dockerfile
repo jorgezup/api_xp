@@ -6,6 +6,6 @@ COPY package.json .
 
 RUN npm install --omit=dev
 
-RUN npm run build
+RUN npx tsc --build
 
 COPY ./dist ./dist
