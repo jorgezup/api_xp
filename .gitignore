@@ -4,4 +4,6 @@ node_modules
 
 .vscode/
 
-src/database/migrations
+# src/database/migrations
+
+dist/
