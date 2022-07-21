@@ -7,7 +7,7 @@ import HttpException from "../shared/http.exception";
 const SECRET = process.env.JWT_SECRET || "";
 
 const jwtConfig: SignOptions = {
-  expiresIn: "15m",
+  expiresIn: "60m",
   algorithm: "HS256",
 };
 
