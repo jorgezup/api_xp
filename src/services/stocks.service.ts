@@ -21,6 +21,16 @@ type StockResponse = {
   updated_at: Date;
 };
 
+const requestApi = async (stockName: string) => {
+  const response = await fetch(`${process.env.EXTERNAL_API}${stockName}`);
+
+  const { results } = await response.json();
+
+  const resultObject = Object.entries(results)[0][1] as StockResponse;
+
+  return resultObject;
+};
+
 export class StocksService {
   async createStock({ name, value }: StockRequest) {
     const stock = await stockRepository.findOneBy({ name });
@@ -29,11 +39,25 @@ export class StocksService {
       return new Error("Stock already exists");
     }
 
-    const newStock = stockRepository.create({ name, value });
+    const resultObject = await requestApi(name);
 
-    await stockRepository.save(newStock);
+    if (resultObject.error) {
+      const messageText = resultObject.message.split(":")[0];
+      return new HttpException(422, messageText);
+    }
 
-    return newStock;
+    const newStock = stockRepository.create({
+      name: resultObject.symbol,
+      value: resultObject.price,
+    });
+
+    const objectNewStock = await stockRepository.save(newStock);
+
+    return {
+      codStock: objectNewStock.codStock,
+      name: objectNewStock.name,
+      value: objectNewStock.value || value,
+    };
   }
   async listStocks() {
     const stocks = await stockRepository.find();
@@ -41,11 +65,7 @@ export class StocksService {
     return stocks;
   }
   async updateStock(stock: string) {
-    const response = await fetch(`${process.env.EXTERNAL_API}${stock}`);
-
-    const { results } = await response.json();
-
-    const resultObject = Object.entries(results)[0][1] as StockResponse;
+    const resultObject = await requestApi(stock);
 
     if (resultObject.error) {
       const messageText = resultObject.message.split(":")[0];
@@ -63,21 +83,22 @@ export class StocksService {
     });
 
     if (!foundStock) {
-      const newStock = stockRepository.create({
-        name: updatedStock.name,
-        value: updatedStock.price,
-      });
-
-      await stockRepository.save(newStock);
-    } else {
-      stockRepository
-        .createQueryBuilder()
-        .update()
-        .set({ value: updatedStock.price })
-        .where("name = :name", { name: updatedStock.name })
-        .execute();
+      return new HttpException(
+        404,
+        `${updatedStock.name} not found. Contact admin to register this stock.`
+      );
     }
 
-    return updatedStock;
+    stockRepository
+      .createQueryBuilder()
+      .update()
+      .set({ value: updatedStock.price })
+      .where("name = :name", { name: updatedStock.name })
+      .execute();
+
+    return {
+      codStock: foundStock.codStock,
+      ...updatedStock,
+    };
   }
 }
