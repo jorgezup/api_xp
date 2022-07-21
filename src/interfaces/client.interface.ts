@@ -1,5 +1,6 @@
 interface IClientResponse {
   codClient: number;
+  accountId: number;
   name: string;
   surname: string;
   email: string;
