@@ -23,6 +23,7 @@ export class ClientService {
 
     const response: IClientResponse = {
       codClient: newClient.codClient,
+      accountId: newAccount.id,
       name: newClient.name,
       surname: newClient.surname,
       email: newClient.email,
