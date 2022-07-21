@@ -14,6 +14,7 @@ export class AccountService {
         .leftJoin("account_transactions", "at2", "a.id =at2.accountId")
         .select("a.codClient")
         .addSelect("ROUND(SUM(at2.value),2)", "saldo")
+        .groupBy("a.codClient")
         .getRawOne();
 
     if (!transactions) {
