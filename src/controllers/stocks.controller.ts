@@ -3,13 +3,17 @@ import { Request, Response } from "express";
 import { StocksService } from "../services/stocks.service";
 import HttpException from "../shared/http.exception";
 
+type StockRequest = {
+  name: string;
+};
+
 export class StocksController {
   async create(req: Request, res: Response) {
-    const { name, value } = req.body;
+    const { name }: StockRequest = req.body;
 
     const service = new StocksService();
 
-    const response = await service.createStock({ name, value });
+    const response = await service.createStock(name);
 
     if (response instanceof Error) {
       return res.status(400).json({ message: response.message });
