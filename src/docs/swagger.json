@@ -34,8 +34,15 @@
                }
             },
             "responses": {
-               "200": {
-                  "description": "OK"
+               "201": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Client"
+                        }
+                     }
+                  }                  
                },
                "400": {
                   "description": "Email already exists"
@@ -162,7 +169,7 @@
                }
             },
             "responses": {
-               "200": {
+               "201": {
                   "description": "OK"
                },
                "401": {
@@ -208,7 +215,7 @@
                }
             },
             "responses": {
-               "200": {
+               "201": {
                   "description": "OK"
                },
                "400": {
@@ -306,7 +313,7 @@
                }
             },
             "responses": {
-               "200": {
+               "201": {
                   "description": "OK"
                },
                "400": {
@@ -355,7 +362,7 @@
                }
             },
             "responses": {
-               "200": {
+               "201": {
                   "description": "OK"
                },
                "400": {
