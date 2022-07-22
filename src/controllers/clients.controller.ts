@@ -15,7 +15,7 @@ export class ClientController {
       return res.status(400).json({ message: result.message });
     }
 
-    return res.json(result);
+    return res.status(201).json(result);
   }
   async login(req: Request, res: Response): Promise<Response> {
     const { codClient, password }: IClientLogin = req.body;
