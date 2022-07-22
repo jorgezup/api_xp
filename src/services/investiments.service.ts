@@ -116,6 +116,8 @@ export class InvestimentsService {
       return [];
     }
 
-    return list;
+    const stocksInHold = list.filter((stock) => stock.stocksquantity > 0);
+
+    return stocksInHold;
   }
 }
