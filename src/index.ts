@@ -1,7 +1,10 @@
+import cors from "cors";
 import express from "express";
-// import "express-async-errors"; // TO-DO: descomentar
+import "express-async-errors";
+import swaggerUI from "swagger-ui-express";
 
 import { AppDataSource } from "./database/data-source";
+import swaggerDocs from "./docs/swagger.json";
 import { errorMiddleware } from "./middlewares/error.middleware";
 import { routes } from "./routes";
 
@@ -12,6 +15,10 @@ AppDataSource.initialize()
     const app = express();
 
     app.use(express.json());
+
+    app.use(cors());
+
+    app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDocs));
 
     app.use(routes);
 
