@@ -7,6 +7,8 @@ import {
 import { accountRepository } from "../database/models/repositories/account.repository";
 import { stockRepository } from "../database/models/repositories/stock.repository";
 import { stockTransactionRepository } from "../database/models/repositories/stockTransaction.repository";
+import { TypeTransaction } from "../interfaces/transaction.interface";
+import { AccountTransactionService } from "./accountTransaction.service";
 
 type StockQuantityType = {
   totalQuantity: number;
@@ -47,6 +49,23 @@ export class InvestimentsService {
       return updatedValue;
     }
 
+    const orderPrice = updatedValue * order.quantity;
+
+    const accountTransactionService = new AccountTransactionService();
+
+    const accountResponse = await accountTransactionService.withdrawTransaction(
+      {
+        accountId: order.accountId,
+        codClient: order.codClient,
+        type: TypeTransaction.WITHDRAW,
+        value: orderPrice,
+      }
+    );
+
+    if (accountResponse instanceof Error) {
+      return accountResponse;
+    }
+
     const newStockTransaction = await stockTransactionRepository
       .createQueryBuilder()
       .insert()
@@ -84,6 +103,22 @@ export class InvestimentsService {
     ) {
       return new Error("There's not enought stock");
     }
+
+    const orderPrice = updatedValue * order.quantity;
+
+    const accountTransactionService = new AccountTransactionService();
+
+    const accountResponse = await accountTransactionService.depositTransaction({
+      accountId: order.accountId,
+      codClient: order.codClient,
+      type: TypeTransaction.WITHDRAW,
+      value: orderPrice,
+    });
+
+    if (accountResponse instanceof Error) {
+      return accountResponse;
+    }
+
     const newStockTransaction = await stockTransactionRepository
       .createQueryBuilder()
       .insert()
