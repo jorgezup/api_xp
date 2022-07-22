@@ -25,7 +25,9 @@ export class ClientController {
     const result = await service.loginClient({ codClient, password });
 
     if (result instanceof Error) {
-      return res.status(400).json({ message: result.message });
+      return res
+        .status(400)
+        .json({ message: "Client id or password is wrong!" });
     }
 
     return res.status(200).json({ token: result });
