@@ -1,589 +1,608 @@
 {
-    "openapi": "3.0.2",
-    "info": {
-       "title": "API Title",
-       "description": "Essa API tem como objetivo a manipulação dos dados de um cliente. Simulando um ambiente bancário, onde o cliente possui uma conta bancária, podendo realizar saques e depósitos e até mesmo comprar e vender ações.",
-       "version": "1.0"
-    },
-    "servers": [
-       {
-          "url": "http://localhost:3000/",
-          "description": "API de Teste Local"
-       },
-       {
-          "url": "https://jorgezup-api-node.herokuapp.com/",
-          "description": "API de Produção (Heroku)"
-       }
-    ],
-    "paths": {
-       "/clientes/criar": {
-          "post": {
-             "summary": "Cadastro de cliente",
-             "description": "Essa rota será responsável por cadastrar um novo cliente",
-             "tags": [
-                "Clientes"
-             ],
-             "requestBody": {
-                "required": true,
-                "content": {
-                   "application/json": {
-                      "schema": {
-                         "$ref": "#/components/schemas/Client"
-                      }
-                   }
-                }
-             },
-             "responses": {
-                "200": {
-                   "description": "OK"
-                },
-                "400": {
-                   "description": "Email already exists"
-                },
-                "422": {
+   "openapi": "3.0.2",
+   "info": {
+      "title": "API Rest Node.js",
+      "description": "Essa API tem como objetivo a manipulação dos dados de um cliente. Simulando um ambiente bancário, onde o cliente possui uma conta bancária, podendo realizar saques e depósitos e até mesmo comprar e vender ações.",
+      "version": "1.0"
+   },
+   "servers": [
+      {
+         "url": "http://localhost:3000/",
+         "description": "API de Teste Local"
+      },
+      {
+         "url": "https://jorgezup-api-node.herokuapp.com/",
+         "description": "API de Produção (Heroku)"
+      }
+   ],
+   "paths": {
+      "/clientes/criar": {
+         "post": {
+            "summary": "Cadastro de cliente",
+            "description": "Essa rota será responsável por cadastrar um novo cliente",
+            "tags": [
+               "Clientes"
+            ],
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/Client"
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "200": {
+                  "description": "OK"
+               },
+               "400": {
+                  "description": "Email already exists"
+               },
+               "422": {
                   "description": "Missing fields or diferent type expected entry"
-                },
-                "5XX": {
-                   "description": "Internal server error"
-                }
-             }
-          }
-       },
-       "/clientes/entrar": {
-          "post": {
-             "summary": "Login do cliente",
-             "description": "Essa rota será responsável por realizar o login do cliente",
-             "tags": [
-                "Clientes"
-             ],
-             "requestBody": {
-                "required": true,
-                "content": {
-                   "application/json": {
-                      "schema": {
-                         "$ref": "#/components/schemas/Login"
-                      }
-                   }
-                }
-             },
-             "responses": {
-                "200": {
-                   "description": "OK"
-                },
-                "400": {
-                   "description": "Client id or password is wrong!"
-                },
-                "401": {
-                   "description": "Unauthorized"
-                },
-                "422": {
+               },
+               "5XX": {
+                  "description": "Internal server error"
+               }
+            }
+         }
+      },
+      "/clientes/entrar": {
+         "post": {
+            "summary": "Login do cliente",
+            "description": "Essa rota será responsável por realizar o login do cliente",
+            "tags": [
+               "Clientes"
+            ],
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/Login"
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "200": {
+                  "description": "OK"
+               },
+               "400": {
+                  "description": "Client id or password is wrong!"
+               },
+               "401": {
+                  "description": "Unauthorized"
+               },
+               "422": {
                   "description": "Missing fields or diferent type expected entry"
-                },
-                "5XX": {
-                   "description": "Internal server error"
-                }
-             }
-          }
-       },
-       "/conta/{accountId}/saldo": {
-          "get": {
-             "summary": "Saldo do usuário",
-             "description": "Essa rota será responsável por buscar o valor do saldo do cliente",
-             "security": [
-                {
-                   "BearerAuth": []
-                }
-             ],
-             "tags": [
-                "Conta"
-             ],
-             "parameters": [
-                {
-                   "in": "path",
-                   "name": "accountId",
-                   "schema": {
-                      "type": "string"
-                   },
-                   "required": true
-                }
-             ],
-             "responses": {
-                "200": {
-                   "description": "OK",
-                   "content": {
-                      "application/json": {
-                         "schema": {
-                            "$ref": "#/components/schemas/Balance"
-                         }
-                      }
-                   }
-                },
-                "401": {
-                   "description": "Unauthorized"
-                },
-                "5XX": {
-                   "description": "Internal server error"
-                }
-             }
-          }
-       },
-       "/conta/{accountId}/deposito": {
-          "post": {
-             "summary": "Deposita na conta",
-             "description": "Essa rota será responsável por realizar o depósito na conta do cliente",
-             "security": [
-                {
-                   "BearerAuth": []
-                }
-             ],
-             "tags": [
-                "Conta"
-             ],
-             "parameters": [
-                {
-                   "in": "path",
-                   "name": "accountId",
-                   "schema": {
-                      "type": "string"
-                   },
-                   "required": true
-                }
-             ],
-             "requestBody": {
-                "required": true,
-                "content": {
-                   "application/json": {
-                      "schema": {
-                         "$ref": "#/components/schemas/TransactionAccount"
-                      }
-                   }
-                }
-             },
-             "responses": {
-                "200": {
-                   "description": "OK"
-                },
-                "401": {
-                   "description": "Unauthorized"
-                },
-                "5XX": {
-                   "description": "Internal server error"
-                }
-             }
-          }
-       },
-       "/conta/{accountId}/saque": {
-          "post": {
-             "summary": "Saque na conta",
-             "description": "Essa rota será responsável por realizar o saque na conta do cliente",
-             "security": [
-                {
-                   "BearerAuth": []
-                }
-             ],
-             "tags": [
-                "Conta"
-             ],
-             "parameters": [
-                {
-                   "in": "path",
-                   "name": "accountId",
-                   "schema": {
-                      "type": "string"
-                   },
-                   "required": true
-                }
-             ],
-             "requestBody": {
-                "required": true,
-                "content": {
-                   "application/json": {
-                      "schema": {
-                         "$ref": "#/components/schemas/TransactionAccount"
-                      }
-                   }
-                }
-             },
-             "responses": {
-                "200": {
-                   "description": "OK"
-                },
-                "400": {
-                   "description": "There's not enought money"
-                },
-                "401": {
-                   "description": "Unauthorized"
-                },
-                "5XX": {
-                   "description": "Internal server error"
-                }
-             }
-          }
-       },
-       "/investimentos/{accountId}/saldo": {
-          "get": {
-             "summary": "Saldo de investimento",
-             "description": "Essa rota será responsável por mostrar as ações que o cliente possui",
-             "security": [
-                {
-                   "BearerAuth": []
-                }
-             ],
-             "tags": [
-                "Investimentos"
-             ],
-             "parameters": [
-                {
-                   "in": "path",
-                   "name": "accountId",
-                   "schema": {
-                      "type": "string"
-                   },
-                   "required": true
-                }
-             ],
-             "responses": {
-                "200": {
-                   "description": "OK",
-                   "content": {
-                      "application/json": {
-                         "schema": {
-                            "type": "array",
-                            "items": {
-                               "$ref": "#/components/schemas/BalanceStocks"
-                            }
-                         }
-                      }
-                   }
-                },
-                "400": {
-                   "description": "Email already exists"
-                },
-                "401": {
-                   "description": "Unauthorized"
-                },
-                "5XX": {
-                   "description": "Internal server error"
-                }
-             }
-          }
-       },
-       "/investimentos/{accountId}/comprar": {
-          "post": {
-             "summary": "Compra de Ação",
-             "description": "Essa rota será responsável por realizar a compra de uma ação",
-             "security": [
-                {
-                   "BearerAuth": []
-                }
-             ],
-             "tags": [
-                "Investimentos"
-             ],
-             "parameters": [
-                {
-                   "in": "path",
-                   "name": "accountId",
-                   "schema": {
-                      "type": "string"
-                   },
-                   "required": true
-                }
-             ],
-             "requestBody": {
-                "required": true,
-                "content": {
-                   "application/json": {
-                      "schema": {
-                         "$ref": "#/components/schemas/StocksTransaction"
-                      }
-                   }
-                }
-             },
-             "responses": {
-                "200": {
-                   "description": "OK"
-                },
-                "400": {
-                   "description": "There's not enought money"
-                },
-                "401": {
-                   "description": "Unauthorized"
-                },
-                "5XX": {
-                   "description": "Internal server error"
-                }
-             }
-          }
-       },
-       "/investimentos/{accountId}/vender": {
-          "post": {
-             "summary": "Venda de Ação",
-             "description": "Essa rota será responsável por realizar a venda de uma ação",
-             "security": [
-                {
-                   "BearerAuth": []
-                }
-             ],
-             "tags": [
-                "Investimentos"
-             ],
-             "parameters": [
-                {
-                   "in": "path",
-                   "name": "accountId",
-                   "schema": {
-                      "type": "string"
-                   },
-                   "required": true
-                }
-             ],
-             "requestBody": {
-                "required": true,
-                "content": {
-                   "application/json": {
-                      "schema": {
-                         "$ref": "#/components/schemas/StocksTransaction"
-                      }
-                   }
-                }
-             },
-             "responses": {
-                "200": {
-                   "description": "OK"
-                },
-                "400": {
-                   "description": "There's not enought stocks"
-                },
-                "401": {
-                   "description": "Unauthorized"
-                },
-                "5XX": {
-                   "description": "Internal server error"
-                }
-             }
-          }
-       },
-       "/acoes": {
-          "get": {
-             "summary": "Listar as Ações",
-             "description": "Essa rota será responsável por listar todas todas as ações cadastradas na corretora",
-             "tags": [
-                "Ações"
-             ],
-             "responses": {
-                "200": {
-                   "description": "OK",
-                   "content": {
-                      "application/json": {
-                         "schema": {
-                            "type": "array",
-                            "items": {
-                               "$ref": "#/components/schemas/Stocks"
-                            }
-                         }
-                      }
-                   }
-                },
-                "401": {
-                   "description": "Unauthorized"
-                },
-                "5XX": {
-                   "description": "Internal server error"
-                }
-             }
-          }
-       },
-       "/acoes/cadastrar": {
-          "post": {
-             "summary": "Cadastrar um nova de Ação",
-             "description": "Essa rota será responsável por realizar o cadastro de uma nova ação",
-             "security": [
-                {
-                   "BearerAuth": []
-                }
-             ],
-             "tags": [
-                "Ações"
-             ],
-             "requestBody": {
-                "required": true,
-                "content": {
-                   "application/json": {
-                      "schema": {
-                         "$ref": "#/components/schemas/StocksCreate"
-                      }
-                   }
-                }
-             },
-             "responses": {
-                "201": {
-                   "description": "OK",
-                   "content": {
-                      "application/json": {
-                         "schema": {
-                            "$ref": "#/components/schemas/Stocks"
-                         }
-                      }
-                   }
-                },
-                "400": {
-                   "description": "Stock already exists"
-                },
-                "401": {
-                   "description": "Unauthorized"
-                }
-             }
-          }
-       }
-    },
-    "components": {
-       "securitySchemes": {
-          "BearerAuth": {
-             "type": "http",
-             "scheme": "bearer"
-          }
-       },
-       "schemas": {
-          "Client": {
-             "type": "object",
-             "required": [
-                "name",
-                "surname",
-                "email",
-                "password"
-             ],
-             "properties": {
-                "codClient": {
-                   "type": "number"
-                },
-                "accountId": {
-                   "type": "number"
-                },
-                "name": {
-                   "type": "string"
-                },
-                "surname": {
-                   "type": "string"
-                },
-                "email": {
-                   "type": "string"
-                },
-                "password": {
-                   "type": "string"
-                }
-             },
-             "example": {
-                "name": "John",
-                "surname": "Doe",
-                "email": "john.doe@email.com",
-                "password": "doejohn99"
-             }
-          },
-          "Login": {
-             "type": "object",
-             "required": [
-                "codClient",
-                "password"
-             ],
-             "properties": {
-                "email": {
-                   "type": "string"
-                },
-                "password": {
-                   "type": "string"
-                },
-                "token": {
-                   "type": "string"
-                }
-             },
-             "example": {
-                "codClient": 994188,
-                "password": "doejohn99"
-             }
-          },
-          "Balance": {
-             "type": "object",
-             "properties": {
-                "codClient": {
-                   "type": "number"
-                },
-                "saldo": {
-                   "type": "number"
-                }
-             }
-          },
-          "TransactionAccount": {
-             "type": "object",
-             "required": [
-                "value"
-             ],
-             "properties": {
-                "value": {
-                   "type": "number"
-                }
-             },
-             "example": {
-                "value": 110.5
-             }
-          },
-          "BalanceStocks": {
-             "type": "object",
-             "properties": {
-                "codStock": {
-                   "type": "number"
-                },
-                "stockName": {
-                   "type": "string"
-                },
-                "stocksQuantity": {
-                   "type": "string"
-                },
-                "avgPrice": {
-                   "type": "string"
-                }
-             }
-          },
-          "StocksTransaction": {
-             "type": "object",
-             "required": [
-                "codStock",
-                "quantity"
-             ],
-             "properties": {
-                "codStock": {
-                   "type": "number"
-                },
-                "quantity": {
-                   "type": "number"
-                }
-             }
-          },
-          "Stocks": {
-             "type": "object",
-             "properties": {
-                "codStock": {
-                   "type": "number"
-                },
-                "name": {
-                   "type": "string"
-                },
-                "value": {
-                   "type": "number"
-                }
-             }
-          },
-          "StocksCreate": {
-             "type": "object",
-             "required": [
-                "name"
-             ],
-             "properties": {
-                "name": {
-                   "type": "string"
-                }
-             }
-          }
-       }
-    }
- }
+               },
+               "5XX": {
+                  "description": "Internal server error"
+               }
+            }
+         }
+      },
+      "/conta/{accountId}/saldo": {
+         "get": {
+            "summary": "Saldo do usuário",
+            "description": "Essa rota será responsável por buscar o valor do saldo do cliente",
+            "security": [
+               {
+                  "bearerAuth": []
+               }
+            ],
+            "tags": [
+               "Conta"
+            ],
+            "parameters": [
+               {
+                  "name": "accountId",
+                  "in": "path",
+                  "description": "Número de Identificação da Conta",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Balance"
+                        }
+                     }
+                  }
+               },
+               "401": {
+                  "description": "Unauthorized"
+               },
+               "5XX": {
+                  "description": "Internal server error"
+               }
+            }
+         }
+      },
+      "/conta/{accountId}/deposito": {
+         "post": {
+            "summary": "Deposita na conta",
+            "description": "Essa rota será responsável por realizar o depósito na conta do cliente",
+            "security": [
+               {
+                  "bearerAuth": []
+               }
+            ],
+            "tags": [
+               "Conta"
+            ],
+            "parameters": [
+               {
+                  "name": "accountId",
+                  "in": "path",
+                  "description": "Número de Identificação da Conta",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/TransactionAccount"
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "200": {
+                  "description": "OK"
+               },
+               "401": {
+                  "description": "Unauthorized"
+               },
+               "5XX": {
+                  "description": "Internal server error"
+               }
+            }
+         }
+      },
+      "/conta/{accountId}/saque": {
+         "post": {
+            "summary": "Saque na conta",
+            "description": "Essa rota será responsável por realizar o saque na conta do cliente",
+            "security": [
+               {
+                  "bearerAuth": []
+               }
+            ],
+            "tags": [
+               "Conta"
+            ],
+            "parameters": [
+               {
+                  "name": "accountId",
+                  "in": "path",
+                  "description": "Número de Identificação da Conta",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/TransactionAccount"
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "200": {
+                  "description": "OK"
+               },
+               "400": {
+                  "description": "There's not enought money"
+               },
+               "401": {
+                  "description": "Unauthorized"
+               },
+               "5XX": {
+                  "description": "Internal server error"
+               }
+            }
+         }
+      },
+      "/investimentos/{accountId}/saldo": {
+         "get": {
+            "summary": "Saldo de investimento",
+            "description": "Essa rota será responsável por mostrar as ações que o cliente possui",
+            "security": [
+               {
+                  "bearerAuth": []
+               }
+            ],
+            "tags": [
+               "Investimentos"
+            ],
+            "parameters": [
+               {
+                  "name": "accountId",
+                  "in": "path",
+                  "description": "Número de Identificação da Conta",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {
+                              "$ref": "#/components/schemas/BalanceStocks"
+                           }
+                        }
+                     }
+                  }
+               },
+               "400": {
+                  "description": "Email already exists"
+               },
+               "401": {
+                  "description": "Unauthorized"
+               },
+               "5XX": {
+                  "description": "Internal server error"
+               }
+            }
+         }
+      },
+      "/investimentos/{accountId}/comprar": {
+         "post": {
+            "summary": "Compra de Ação",
+            "description": "Essa rota será responsável por realizar a compra de uma ação",
+            "security": [
+               {
+                  "bearerAuth": []
+               }
+            ],
+            "tags": [
+               "Investimentos"
+            ],
+            "parameters": [
+               {
+                  "name": "accountId",
+                  "in": "path",
+                  "description": "Número de Identificação da Conta",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/StocksTransaction"
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "200": {
+                  "description": "OK"
+               },
+               "400": {
+                  "description": "There's not enought money"
+               },
+               "401": {
+                  "description": "Unauthorized"
+               },
+               "5XX": {
+                  "description": "Internal server error"
+               }
+            }
+         }
+      },
+      "/investimentos/{accountId}/vender": {
+         "post": {
+            "summary": "Venda de Ação",
+            "description": "Essa rota será responsável por realizar a venda de uma ação",
+            "security": [
+               {
+                  "bearerAuth": []
+               }
+            ],
+            "tags": [
+               "Investimentos"
+            ],
+            "parameters": [
+               {
+                  "name": "accountId",
+                  "in": "path",
+                  "description": "Número de Identificação da Conta",
+                  "required": true,
+                  "schema": {
+                     "type": "string"
+                  }
+               }
+            ],
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/StocksTransaction"
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "200": {
+                  "description": "OK"
+               },
+               "400": {
+                  "description": "There's not enought stocks"
+               },
+               "401": {
+                  "description": "Unauthorized"
+               },
+               "5XX": {
+                  "description": "Internal server error"
+               }
+            }
+         }
+      },
+      "/acoes": {
+         "get": {
+            "summary": "Listar as Ações",
+            "description": "Essa rota será responsável por listar todas todas as ações cadastradas na corretora",
+            "tags": [
+               "Ações"
+            ],
+            "security": [
+               {
+                  "bearerAuth": []
+               }
+            ],
+            "responses": {
+               "200": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "type": "array",
+                           "items": {
+                              "$ref": "#/components/schemas/Stocks"
+                           }
+                        }
+                     }
+                  }
+               },
+               "401": {
+                  "description": "Unauthorized"
+               },
+               "5XX": {
+                  "description": "Internal server error"
+               }
+            }
+         }
+      },
+      "/acoes/cadastrar": {
+         "post": {
+            "summary": "Cadastrar um nova de Ação",
+            "description": "Essa rota será responsável por realizar o cadastro de uma nova ação",
+            "security": [
+               {
+                  "bearerAuth": []
+               }
+            ],
+            "tags": [
+               "Ações"
+            ],
+            "requestBody": {
+               "required": true,
+               "content": {
+                  "application/json": {
+                     "schema": {
+                        "$ref": "#/components/schemas/StocksCreate"
+                     }
+                  }
+               }
+            },
+            "responses": {
+               "201": {
+                  "description": "OK",
+                  "content": {
+                     "application/json": {
+                        "schema": {
+                           "$ref": "#/components/schemas/Stocks"
+                        }
+                     }
+                  }
+               },
+               "400": {
+                  "description": "Stock already exists"
+               },
+               "401": {
+                  "description": "Unauthorized"
+               }
+            }
+         }
+      }
+   },
+   "components": {
+      "schemas": {
+         "Client": {
+            "type": "object",
+            "required": [
+               "name",
+               "surname",
+               "email",
+               "password"
+            ],
+            "properties": {
+               "codClient": {
+                  "type": "number"
+               },
+               "accountId": {
+                  "type": "number"
+               },
+               "name": {
+                  "type": "string"
+               },
+               "surname": {
+                  "type": "string"
+               },
+               "email": {
+                  "type": "string"
+               },
+               "password": {
+                  "type": "string"
+               }
+            },
+            "example": {
+               "name": "John",
+               "surname": "Doe",
+               "email": "john.doe@email.com",
+               "password": "doejohn99"
+            }
+         },
+         "Login": {
+            "type": "object",
+            "required": [
+               "codClient",
+               "password"
+            ],
+            "properties": {
+               "email": {
+                  "type": "string"
+               },
+               "password": {
+                  "type": "string"
+               },
+               "token": {
+                  "type": "string"
+               }
+            },
+            "example": {
+               "codClient": 919962,
+               "password": "doejohn99"
+            }
+         },
+         "Balance": {
+            "type": "object",
+            "properties": {
+               "codClient": {
+                  "type": "number"
+               },
+               "saldo": {
+                  "type": "number"
+               }
+            }
+         },
+         "TransactionAccount": {
+            "type": "object",
+            "required": [
+               "value"
+            ],
+            "properties": {
+               "value": {
+                  "type": "number"
+               }
+            },
+            "example": {
+               "value": 110.5
+            }
+         },
+         "BalanceStocks": {
+            "type": "object",
+            "properties": {
+               "codStock": {
+                  "type": "number"
+               },
+               "stockName": {
+                  "type": "string"
+               },
+               "stocksQuantity": {
+                  "type": "string"
+               },
+               "avgPrice": {
+                  "type": "string"
+               }
+            }
+         },
+         "StocksTransaction": {
+            "type": "object",
+            "required": [
+               "codStock",
+               "quantity"
+            ],
+            "properties": {
+               "codStock": {
+                  "type": "number"
+               },
+               "quantity": {
+                  "type": "number"
+               }
+            },
+            "example": {
+               "codStock": 103311,
+               "quantity": 8
+            }
+         },
+         "Stocks": {
+            "type": "object",
+            "properties": {
+               "codStock": {
+                  "type": "number"
+               },
+               "name": {
+                  "type": "string"
+               },
+               "value": {
+                  "type": "number"
+               }
+            }
+         },
+         "StocksCreate": {
+            "type": "object",
+            "required": [
+               "name"
+            ],
+            "properties": {
+               "name": {
+                  "type": "string"
+               }
+            },
+            "example": {
+               "name": "MGLU3"
+            }
+         }
+      },
+      "securitySchemes": {
+         "bearerAuth": {
+            "type": "http",
+            "scheme": "bearer",
+            "bearerFormat": "JWT"
+         }
+      }
+   }
+}
