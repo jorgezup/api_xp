@@ -10,7 +10,10 @@ export const authenticationMiddleware = async (
   const token = req.headers.authorization;
   const payload = await authenticateToken(token);
   if (!payload || payload instanceof Error) {
-    return next({ messageType: "Unauthorized", statusCode: 401 });
+    return next({
+      messageType: "Unauthorized",
+      statusCode: 401,
+    });
   }
 
   res.locals.payload = payload;
