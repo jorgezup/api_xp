@@ -1,25 +1,8 @@
 import fetch from "node-fetch";
 
 import { stockRepository } from "../database/models/repositories/stock.repository";
+import { StockResponse } from "../interfaces/stock.interface";
 import HttpException from "../shared/http.exception";
-
-type StockRequest = {
-  name: string;
-  value: number;
-};
-
-type ErrorAPI = {
-  error: string;
-  message: string;
-};
-
-type StockResponse = {
-  error?: ErrorAPI;
-  message: string;
-  symbol: string;
-  price: number;
-  updated_at: Date;
-};
 
 const requestApi = async (stockName: string) => {
   const response = await fetch(`${process.env.EXTERNAL_API}${stockName}`);
@@ -32,7 +15,7 @@ const requestApi = async (stockName: string) => {
 };
 
 export class StocksService {
-  async createStock({ name, value }: StockRequest) {
+  async createStock(name: string) {
     const stock = await stockRepository.findOneBy({ name });
 
     if (stock) {
@@ -56,13 +39,17 @@ export class StocksService {
     return {
       codStock: objectNewStock.codStock,
       name: objectNewStock.name,
-      value: objectNewStock.value || value,
+      value: objectNewStock.value,
     };
   }
   async listStocks() {
     const stocks = await stockRepository.find();
 
-    return stocks;
+    const stocksPromises = stocks.map(({ name }) => this.updateStock(name));
+
+    const stocksUpdated = await Promise.all(stocksPromises);
+
+    return stocksUpdated;
   }
   async updateStock(stock: string) {
     const resultObject = await requestApi(stock);
@@ -74,8 +61,8 @@ export class StocksService {
 
     const updatedStock = {
       name: resultObject.symbol,
-      price: resultObject.price,
-      updatedAt: resultObject.updated_at,
+      value: resultObject.price,
+      // updatedAt: resultObject.updated_at,
     };
 
     const foundStock = await stockRepository.findOneBy({
@@ -92,7 +79,7 @@ export class StocksService {
     stockRepository
       .createQueryBuilder()
       .update()
-      .set({ value: updatedStock.price })
+      .set({ value: updatedStock.value })
       .where("name = :name", { name: updatedStock.name })
       .execute();
 
