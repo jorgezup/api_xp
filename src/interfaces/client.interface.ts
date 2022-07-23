@@ -12,7 +12,7 @@ interface IClientRequest extends IClientResponse {
 
 interface IClientLogin {
   codClient: number;
-  password: number;
+  password: string;
 }
 
 export { IClientRequest, IClientResponse, IClientLogin };
