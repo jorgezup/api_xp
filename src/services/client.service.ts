@@ -1,3 +1,5 @@
+import bcrypt from "bcrypt-nodejs";
+
 import { accountRepository } from "../database/models/repositories/account.repository";
 import { clientRepository } from "../database/models/repositories/client.repository";
 import {
@@ -6,6 +8,7 @@ import {
   IClientResponse,
 } from "../interfaces/client.interface";
 import { IPayload } from "../interfaces/payload.interface";
+import HttpException from "../shared/http.exception";
 import { generateJWTToken } from "../utils/JWTToken";
 
 export class ClientService {
@@ -14,7 +17,13 @@ export class ClientService {
       return new Error("Email already exists");
     }
 
-    const newClient = clientRepository.create(client);
+    const salt = bcrypt.genSaltSync(5);
+    const clientToBeInserted: IClientRequest = {
+      ...client,
+      password: bcrypt.hashSync(client.password, salt),
+    };
+
+    const newClient = clientRepository.create(clientToBeInserted);
 
     const newAccount = accountRepository.create({ client: newClient });
 
@@ -39,8 +48,18 @@ export class ClientService {
       client: { codClient },
     });
     if (!accountClient) {
-      return new Error("Client does not exists");
+      return new Error();
     }
+
+    const isClient = bcrypt.compareSync(
+      password,
+      accountClient.client.password
+    );
+
+    if (!isClient) {
+      return new Error();
+    }
+
     const payload: IPayload = {
       accountId: accountClient.id,
       codClient: accountClient.client.codClient,
