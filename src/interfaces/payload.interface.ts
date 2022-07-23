@@ -4,4 +4,5 @@ export interface IPayload {
   name: string;
   surname: string;
   email: string;
+  isAdmin: boolean;
 }
