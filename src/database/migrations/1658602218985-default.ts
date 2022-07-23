@@ -1,12 +1,12 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class default1658409411052 implements MigrationInterface {
-    name = 'default1658409411052'
+export class default1658602218985 implements MigrationInterface {
+    name = 'default1658602218985'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.query(`CREATE TYPE "public"."account_transactions_type_enum" AS ENUM('deposit', 'withdraw')`);
+        await queryRunner.query(`CREATE TYPE "public"."account_transactions_type_enum" AS ENUM('deposit', 'withdraw', 'buy-stock', 'sell-stock')`);
         await queryRunner.query(`CREATE TABLE "account_transactions" ("id" SERIAL NOT NULL, "value" numeric(7,2) NOT NULL, "type" "public"."account_transactions_type_enum" NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "accountId" integer, CONSTRAINT "PK_bcfbf02d6acfb8fe417296f010d" PRIMARY KEY ("id"))`);
-        await queryRunner.query(`CREATE TABLE "clients" ("codClient" integer NOT NULL, "name" text NOT NULL, "surname" text NOT NULL, "email" character varying(100) NOT NULL, "password" text NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "UQ_b48860677afe62cd96e12659482" UNIQUE ("email"), CONSTRAINT "PK_b243c6db8951e0d1ad0704af016" PRIMARY KEY ("codClient"))`);
+        await queryRunner.query(`CREATE TABLE "clients" ("codClient" integer NOT NULL, "name" text NOT NULL, "surname" text NOT NULL, "email" character varying(100) NOT NULL, "password" text NOT NULL, "isAdmin" boolean NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "UQ_b48860677afe62cd96e12659482" UNIQUE ("email"), CONSTRAINT "PK_b243c6db8951e0d1ad0704af016" PRIMARY KEY ("codClient"))`);
         await queryRunner.query(`CREATE TABLE "stocks" ("codStock" integer NOT NULL, "name" text NOT NULL, "value" numeric(7,2) NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "updatedAt" TIMESTAMP NOT NULL DEFAULT now(), CONSTRAINT "PK_95c71dc612f72e5fdf7cf23ed63" PRIMARY KEY ("codStock"))`);
         await queryRunner.query(`CREATE TYPE "public"."stocks_transactions_type_enum" AS ENUM('buy', 'sell')`);
         await queryRunner.query(`CREATE TABLE "stocks_transactions" ("id" SERIAL NOT NULL, "value" numeric(7,2) NOT NULL, "type" "public"."stocks_transactions_type_enum" NOT NULL, "quantity" integer NOT NULL, "createdAt" TIMESTAMP NOT NULL DEFAULT now(), "codStock" integer, "accountId" integer, CONSTRAINT "PK_5d095fa943d42ba07e3a0f8221c" PRIMARY KEY ("id"))`);
