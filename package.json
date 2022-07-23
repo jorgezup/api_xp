@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "build": "rimraf dist && tsc",
-    "postinstall": "tsc",
-    "up": "npm run build && docker compose up",
-    "down": "docker compose down",
     "dev": "nodemon --exec ts-node src/index.ts",
+    "build": "rimraf dist && tsc",
+    "up": "npm run migration:run && npm start",
+    "up:dev": "npm run dev && docker compose up",
+    "down": "docker compose down",
     "migration:generate": "typeorm-ts-node-commonjs -d ./src/database/data-source.ts migration:generate ./src/database/migrations/default",
     "migration:run": "typeorm-ts-node-commonjs -d ./src/database/data-source.ts migration:run"
   },

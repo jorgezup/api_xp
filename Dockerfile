@@ -1,13 +1,15 @@
-FROM node:16-alpine
+FROM node:16-alpine as base
 
 WORKDIR /app
 
 COPY package*.json ./
 
-RUN npm install --omit=dev
+RUN npm i
 
 COPY . .
 
-RUN npm run build
+FROM base as production
 
-COPY ./dist ./dist
+ENV NODE_PATH=./build
+
+RUN npm run build

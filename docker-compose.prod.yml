@@ -13,18 +13,17 @@ services:
       - '5432:5432'
     volumes:
       - db:/var/lib/postgresql/data
-  api:
-    container_name: api-container
+  api-production:
+    container_name: api-container-production
     build:
       context: .
       dockerfile: Dockerfile
-      target: base
+      target: production
     image: api_node
     restart: always
-    command: sh -c "npx typeorm -d ./dist/database/data-source.js migration:run && npm run dev"
-    working_dir: /app
+    command: sh -c "npx typeorm -d ./dist/database/data-source.js migration:run && npm start"
     volumes:
-      - ./:/app
+      - ./dist:/app/dist
     links:
       - db
     depends_on:
