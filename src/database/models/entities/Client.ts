@@ -26,6 +26,9 @@ export class Client {
   @Column({ type: "text" })
   password: string;
 
+  @Column({ default: false })
+  isAdmin: boolean;
+
   @CreateDateColumn()
   createdAt: Date;
 
