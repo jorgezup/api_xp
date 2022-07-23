@@ -11,4 +11,4 @@ routes.use(authenticationMiddleware);
 routes.get("/", new StocksController().list);
 routes.post("/cadastrar", validateIsAdmin, new StocksController().create);
 
-export { routes as stocksRoute };
+export { routes as stocksRoute }
