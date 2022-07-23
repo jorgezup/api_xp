@@ -66,6 +66,7 @@ export class ClientService {
       name: accountClient.client.name,
       surname: accountClient.client.surname,
       email: accountClient.client.email,
+      isAdmin: accountClient.client.isAdmin,
     };
 
     const token = generateJWTToken(payload);
