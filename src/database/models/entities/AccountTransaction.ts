@@ -6,12 +6,8 @@ import {
   PrimaryGeneratedColumn,
 } from "typeorm";
 
+import { TypeTransaction } from "../../../interfaces/transaction.interface";
 import { Account } from "./Account";
-
-export enum TypeTransaction {
-  DEPOSIT = "deposit",
-  WITHDRAW = "withdraw",
-}
 
 @Entity("account_transactions")
 export class Account_Transaction {
