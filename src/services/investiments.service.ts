@@ -14,6 +14,21 @@ type StockQuantityType = {
   totalQuantity: number;
 };
 
+type StockTransaction = {
+  accountId: number;
+  quantity: number;
+  type: TypeStockTransaction;
+  value: number;
+  codStock: number;
+};
+
+type StockInHold = {
+  codStock: number;
+  stockname: string;
+  stocksquantity: number;
+  avgprice: number;
+};
+
 const getUpdatedPriceStock = (codStock: number): Promise<number | Error> =>
   stockRepository
     .createQueryBuilder()
@@ -26,10 +41,10 @@ const getUpdatedPriceStock = (codStock: number): Promise<number | Error> =>
       (error) => error
     );
 
-const getStockQuantity = (
+const getStockQuantity = async (
   codStock: number,
   accountId: number
-): Promise<StockQuantityType> =>
+): Promise<StockQuantityType | Error> =>
   stockTransactionRepository
     .createQueryBuilder("st")
     .select("SUM(st.quantity)", "totalQuantity")
@@ -40,6 +55,32 @@ const getStockQuantity = (
       (data) => data,
       (error) => error
     );
+
+const createStockTransaction = (stockTransaction: StockTransaction) =>
+  stockTransactionRepository
+    .createQueryBuilder()
+    .insert()
+    .into(Stock_Transaction)
+    .values({
+      account: { id: stockTransaction.accountId },
+      quantity: stockTransaction.quantity,
+      type: stockTransaction.type,
+      value: stockTransaction.value,
+      stock: { codStock: stockTransaction.codStock },
+    })
+    .execute();
+
+const getListOfStocksInHold = (codClient: number): Promise<StockInHold[]> =>
+  accountRepository
+    .createQueryBuilder("a")
+    .select(
+      "s.codStock, s.name as stockName, SUM(st.quantity) as stocksQuantity, ROUND(AVG(st.value),2) as avgPrice"
+    )
+    .leftJoin("stocks_transactions", "st", "a.id = st.accountId")
+    .leftJoin("stocks", "s", "s.codStock = st.codStock")
+    .where("a.codClient = :codClient", { codClient })
+    .groupBy("s.codStock")
+    .getRawMany();
 
 export class InvestimentsService {
   async buyStock(order: TradeOrder) {
@@ -57,7 +98,7 @@ export class InvestimentsService {
       {
         accountId: order.accountId,
         codClient: order.codClient,
-        type: TypeTransaction.WITHDRAW,
+        type: TypeTransaction.BUY_STOCK,
         value: orderPrice,
       }
     );
@@ -66,18 +107,15 @@ export class InvestimentsService {
       return accountResponse;
     }
 
-    const newStockTransaction = await stockTransactionRepository
-      .createQueryBuilder()
-      .insert()
-      .into(Stock_Transaction)
-      .values({
-        account: { id: order.accountId },
-        quantity: order.quantity,
-        type: TypeStockTransaction.BUY,
-        value: updatedValue,
-        stock: { codStock: order.codStock },
-      })
-      .execute();
+    const stockTransaction: StockTransaction = {
+      accountId: order.accountId,
+      quantity: order.quantity,
+      type: TypeStockTransaction.BUY,
+      value: updatedValue,
+      codStock: order.codStock,
+    };
+
+    const newStockTransaction = await createStockTransaction(stockTransaction);
 
     return newStockTransaction;
   }
@@ -111,7 +149,7 @@ export class InvestimentsService {
     const accountResponse = await accountTransactionService.depositTransaction({
       accountId: order.accountId,
       codClient: order.codClient,
-      type: TypeTransaction.WITHDRAW,
+      type: TypeTransaction.SELL_STOCK,
       value: orderPrice,
     });
 
@@ -119,39 +157,29 @@ export class InvestimentsService {
       return accountResponse;
     }
 
-    const newStockTransaction = await stockTransactionRepository
-      .createQueryBuilder()
-      .insert()
-      .into(Stock_Transaction)
-      .values({
-        account: { id: order.accountId },
-        quantity: -order.quantity,
-        type: TypeStockTransaction.SELL,
-        value: updatedValue,
-        stock: { codStock: order.codStock },
-      })
-      .execute();
+    const stockTransaction: StockTransaction = {
+      accountId: order.accountId,
+      quantity: order.quantity,
+      type: TypeStockTransaction.SELL,
+      value: updatedValue,
+      codStock: order.codStock,
+    };
+
+    const newStockTransaction = await createStockTransaction(stockTransaction);
 
     return newStockTransaction;
   }
   async list(codClient: number) {
-    const list = await accountRepository
-      .createQueryBuilder("a")
-      .select(
-        "s.codStock, s.name as stockName, SUM(st.quantity) as stocksQuantity, ROUND(AVG(st.value),2) as avgPrice"
-      )
-      .leftJoin("stocks_transactions", "st", "a.id = st.accountId")
-      .leftJoin("stocks", "s", "s.codStock = st.codStock")
-      .where("a.codClient = :codClient", { codClient })
-      .groupBy("s.codStock")
-      .getRawMany();
+    const listOfStocks = await getListOfStocksInHold(codClient);
 
     // { message: `There's no stocks` }
-    if (list.length === 1 && !list[0].codStock) {
+    if (listOfStocks.length === 1 && !listOfStocks[0].codStock) {
       return [];
     }
 
-    const stocksInHold = list.filter((stock) => stock.stocksquantity > 0);
+    const stocksInHold = listOfStocks.filter(
+      (stock) => stock.stocksquantity > 0
+    );
 
     return stocksInHold;
   }
