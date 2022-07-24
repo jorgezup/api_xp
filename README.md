@@ -36,7 +36,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 
 <br />
 <details>
-<summary><strong>Opção sem Docker</string></summary>
+<summary><strong>Opção sem Docker</strong></summary>
 <p>Caso tenha optado por utilizar o repositório sem Docker siga as instruções abaixo, após o clone do repositório.</p>
 
 <p>Para instalar as dependências:</p>
@@ -57,7 +57,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 
 <br />
 <details>
-<summary><strong>Opção com Docker</string></summary> 
+<summary><strong>Opção com Docker</strong></summary> 
 <p>Caso tenha optado por utilizar o repositório com o Docker siga as instruções abaixo, após o clone do repositório.</p>
 
 <p>Para executar o container em modo de desenvolvimento:</p>
