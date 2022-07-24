@@ -89,7 +89,6 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 <br />
 
 <h2>Instruções de Uso</h2>
-<hr />
 <br />
 <details>
 <summary><strong>Para criar um novo cliente</strong></summary><br />
@@ -106,9 +105,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 </blockquote>
 <br />
 </details>
-<br />
 <hr />
-<br />
 <details>
 <summary><strong>Para fazer o login na aplicação</strong></summary><br />
 <p><strong>Rota: </strong>/clientes/entrar</p>
