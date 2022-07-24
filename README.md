@@ -17,7 +17,7 @@
 
 <h2>Documentação</h2>
 <p>A documentação de uso da API, indicando o caminho das rotas, e as entradas esperadas, pode ser consultada neste link abaixo.</p>
-<span style="font-weight: bold;">DEPLOY NO HEROKU -></span>
+<span><strong>DEPLOY NO HEROKU -></strong></span>
 https://jorgezup-api-node.herokuapp.com/api-docs/
 
 <br />
@@ -53,9 +53,9 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 
 <p><code>npm migrate:run</code></p>
 </details>
-<br />
 
-<br />
+<hr />
+
 <details>
 <summary><strong>Opção com Docker</strong></summary> 
 <p>Caso tenha optado por utilizar o repositório com o Docker siga as instruções abaixo, após o clone do repositório.</p>
@@ -130,9 +130,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 <p>O número da conta do cliente (accountId) é diferente do código do cliente (codClient).</u></p>
 <br />
 </details>
-<br />
 <hr />
-<br />
 <details>
 <summary><strong>Para acessar o saldo do cliente</strong></summary><br />
 <p><strong>Rota: </strong>/conta/accountId/saldo</p>
@@ -146,9 +144,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 </blockquote>
 <br />
 </details>
-<br />
 <hr />
-<br />
 
 <details>
 <summary><strong>Para realizar um depósito</strong></summary><br />
@@ -162,9 +158,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 </blockquote>
 <br />
 </details>
-<br />
 <hr />
-<br />
 
 <details>
 <summary><strong>Para realizar um saque</strong></summary><br />
@@ -178,9 +172,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 </blockquote>
 <br />
 </details>
-<br />
 <hr />
-<br />
 
 <details>
 <summary><strong>Para acessar o saldo dos Investimentos</strong></summary><br />
@@ -197,9 +189,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 </blockquote>
 <br />
 </details>
-<br />
 <hr />
-<br />
 
 <details>
 <summary><strong>Para realizar a compra de uma ação</strong></summary><br />
@@ -214,9 +204,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 </blockquote>
 <br />
 </details>
-<br />
 <hr />
-<br />
 
 <details>
 <summary><strong>Para realizar a venda de uma ação</strong></summary><br />
@@ -231,9 +219,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 </blockquote>
 <br />
 </details>
-<br />
 <hr />
-<br />
 
 <details>
 <summary><strong>Para listar as ações disponíveis</strong></summary><br />
@@ -251,15 +237,17 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 </blockquote>
 <br />
 </details>
-<br />
 <hr />
-<br />
 
 <details>
 <summary><strong>Para cadastrar uma nova ação na corretora</strong></summary><br />
 <p><strong>Rota: </strong>/acoes</p>
 <p>Ao acessar esta rota, será possível cadastrar uma nova ação na corretora.</p>
-<p style="color: red;">Somente administradores possuem essa permissão.</p>
+<p><strong>Somente administradores possuem essa permissão.</strong></p>
+<br />
+<p><strong>API Externa: </strong>Foi utilizado a API fornecida pela HG Brasil https://hgbrasil.com/status/finance </p>
+<p>Foi utilizado o endpoint do plano gratuito que retorna apenas os dados de uma ação conforme o código informado.</p>
+<p>Para informações de uso desta API consulte a <a href="https://console.hgbrasil.com/documentation/finance" target="_blank">documentação</a>.</p>
 <p><strong>Exemplo:</strong></p>
 <blockquote>
 { <br />
@@ -268,9 +256,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 </blockquote>
 <br />
 </details>
-<br />
 <hr />
-<br />
 
 <h2>Tecnologias Utilizadas</h2>
 <p>Para realização deste trabalho foi utilizado as seguintes tecnologias;</p>
