@@ -273,4 +273,5 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 </ul>
 
 <h2>Modelo entidade relacionamento</h2>
-![Modelo Entidade Relacionamento](../../../Pictures/api_rest_xp%20-%20public.png)
+
+![api_rest_xp - public](https://user-images.githubusercontent.com/42441349/180655044-c7e479b5-bb4f-4971-93fc-b8914524e165.png)
