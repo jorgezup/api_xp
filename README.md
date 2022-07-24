@@ -18,7 +18,7 @@
 <h2>Documentação</h2>
 <p>A documentação de uso da API, indicando o caminho das rotas, e as entradas esperadas, pode ser consultada neste link abaixo.</p>
 <span><strong>DEPLOY NO HEROKU -></strong></span>
-https://jorgezup-api-node.herokuapp.com/api-docs/
+<a href="https://jorgezup-api-node.herokuapp.com/api-docs/" target="_blank">https://jorgezup-api-node.herokuapp.com/api-docs/</a>
 
 <br />
 
@@ -245,7 +245,7 @@ https://jorgezup-api-node.herokuapp.com/api-docs/
 <p>Ao acessar esta rota, será possível cadastrar uma nova ação na corretora.</p>
 <p><strong>Somente administradores possuem essa permissão.</strong></p>
 <br />
-<p><strong>API Externa: </strong>Foi utilizado a API fornecida pela HG Brasil https://hgbrasil.com/status/finance </p>
+<p><strong>API Externa: </strong>Foi utilizado a API fornecida pela HG Brasil <a href="https://hgbrasil.com/status/finance" target="_blank">https://hgbrasil.com/status/finance</a> https://hgbrasil.com/status/finance </p>
 <p>Foi utilizado o endpoint do plano gratuito que retorna apenas os dados de uma ação conforme o código informado.</p>
 <p>Para informações de uso desta API consulte a <a href="https://console.hgbrasil.com/documentation/finance" target="_blank">documentação</a>.</p>
 <p><strong>Exemplo:</strong></p>
